@@ -6,7 +6,7 @@ A python application using tkinter to play hangman
 # Features
 Hangman: Allows the user to play a game of hangman
 
-Random Words: The words used in the game are randomly generated with the use of (library here)
+Random Words: The words used in the game are randomly generated with the use of the random-word package by vaibhavsingh97 (https://github.com/vaibhavsingh97/random-word)
 
 Hints: The user is able to use a single hint per game if they have trouble finding the word
 
