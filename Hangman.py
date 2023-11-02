@@ -4,24 +4,35 @@ import tkinter as tk
 r = RandomWords()
 word = r.get_random_word()
 
-answerArr = []
-guessArr = []
-guess = ""
-strikes = 0
-hintGiven= 0 # 0 = hint not given, 1= hint is being given, 2= hint already given
-
-for char in word:
-    answerArr.append("_")
+def initializeGame(): # Resets all variables associated with the game
+    global strikes, guess, hintGiven, word, answerArr, guessArr
+    
+    answerArr = []
+    guessArr = []
+    guess = ""
+    strikes = 0
+    hintGiven= 0 # 0 = hint not given, 1= hint is being given, 2= hint already given
+    for char in word:
+        answerArr.append("_")
 
 class GUI:
     def __init__(self):
         self.root = tk.Tk()
+        
+        initializeGame()
+        
         self.root.geometry("600x600")
         self.root.title("Hangman")
 
         self.menubar = tk.Menu( self.root)
-        self.menubar.add_command(label="Restart Game", command='donothing')
+        self.menubar.add_command(label="Restart Game", command=self.restartGame)
         self.menubar.add_command(label="Give Hint", command=self.giveHint)
+        
+        self.difMenu = tk.Menu(self.menubar, tearoff=0)
+        self.difMenu.add_command(label="Easy", command=self.setEasy)
+        self.difMenu.add_command(label="Normal", command=self.setNormal)
+        self.difMenu.add_command(label="Hard", command=self.setHard)
+        self.menubar.add_cascade(label="Difficulty", menu=self.difMenu)
 
         self.topLabel = tk.Label(self.root, text= "Guess a letter", font= ('Arial, 18'))
         self.topLabel.pack(padx=20, pady=20)
@@ -60,16 +71,13 @@ class GUI:
 
 
     def checkGuess(self):   #Finds instances of guessed letter in word and updates the wordBox
-        global strikes
-        global guess
-        global hintGiven
+        global strikes, guess, hintGiven
 
         if(hintGiven == 0 or hintGiven == 2): #Brother...
             guess= self.guessEntry.get()
         else:
             hintGiven= 2
             
-        
         guess = guess.lower()
         if (guess.isalpha() and len(guess)== 1 and guess not in guessArr): #Validate the input. if not valid, guess button does nothing
 
@@ -90,7 +98,6 @@ class GUI:
                 strikes+=1
                 self.drawHangman(strikes)
                 self.strikesLabel.config(text= "Strikes left: {}".format(6- strikes))
-        
         
         if "_" not in answerArr:
             self.endGame(True)
@@ -154,8 +161,8 @@ class GUI:
         self.hangManBox.config(state='disabled')
 
     def giveHint(self): #Gives player a hint by finding the 1st blank char in word and filling it for the user
-        global guess
-        global hintGiven
+        global guess, hintGiven
+
         if(hintGiven == 2):
             print("No more hints!")
         else:
@@ -165,4 +172,57 @@ class GUI:
                     break
             hintGiven = 1
             self.checkGuess()
+    
+    def restartGame(self):
+        self.root.destroy()
+        self.__init__()
+        initializeGame()
+        self.root.mainloop()
+        print("Restarted")
+    
+    def setDifficulty(self, mode): #Not working currently
+        global word
+        r= RandomWords()
+        if mode == "E":
+            while len(word) >5:
+                word = r.get_random_word()
+                print("E")
+        elif mode == "H":
+            while len(word) <8:
+                word = r.get_random_word()
+                print(len(word) <8)
+        elif mode == "M": # default/ normal was picked
+            word = r.get_random_word()
+            print("M")
+        self.restartGame()
+    
+    def setEasy(self):
+        global word
+        r = RandomWords()
+        word = r.get_random_word()
+        
+        while len(word) >5:
+            word = r.get_random_word()
+            print("Easy")
+            print(word)
+        
+        self.restartGame()
+
+    def setNormal(self):
+        global word
+        r = RandomWords()
+        word = r.get_random_word()
+        
+        self.restartGame()
+    
+    def setHard(self):
+        global word
+        r = RandomWords()
+        word = r.get_random_word()
+        
+        while len(word) <8:
+            word = r.get_random_word()
+        
+        self.restartGame()
+
 GUI()
