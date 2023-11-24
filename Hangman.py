@@ -21,11 +21,15 @@ class GUI:
         
         initializeGame()
         
-        self.root.geometry("600x600")
+        self.root.geometry("500x600")
+        self.root.minsize(400,400)
         self.root.title("Hangman")
 
-        self.menubar = tk.Menu( self.root)
-        self.menubar.add_command(label="Restart Game", command=self.restartGame)
+        p1 = tk.PhotoImage(file = 'icon.png')
+        self.root.iconphoto(False, p1)
+
+        self.menubar = tk.Menu(self.root)
+        self.menubar.add_command(label="Restart Game", command=self.setNormal)
         self.menubar.add_command(label="Give Hint", command=self.giveHint)
         
         self.difMenu = tk.Menu(self.menubar, tearoff=0)
@@ -37,20 +41,20 @@ class GUI:
         self.topLabel = tk.Label(self.root, text= "Guess a letter", font= ('Arial, 18'))
         self.topLabel.pack(padx=20, pady=20)
 
+        self.hangManBox = tk.Text(self.root, height= 6, width= 10, font=('Arial, 16')) 
+        self.hangManBox.pack(padx=40, pady=10)
+
         self.guessEntry = tk.Entry(self.root, font= ('Arial, 18'), width= 2)
         self.guessEntry.pack(padx=20, pady=20)
 
         self.guessButton = tk.Button(self.root, text= "Guess", font= ('Arial, 18'), command=self.checkGuess)
         self.guessButton.pack()
         
-        self.wordBox = tk.Entry(self.root, font= ('Arial, 18'), width= 35)
-        self.wordBox.pack(padx=20, pady=40)
+        self.wordBox = tk.Entry(self.root, font= ('Arial, 18'), width= len(word)+10)
+        self.wordBox.pack(padx=20, pady=20)
         
-        self.hangManBox = tk.Text(self.root, height= 6, width= 10) #Need a way to put the font bigger without breaking the lil'man
-        self.hangManBox.pack(padx=40, pady=20)
-
         self.strikesLabel= tk.Label(self.root,font= ('Arial, 18'))
-        self.strikesLabel.pack(anchor="w", padx=40)
+        self.strikesLabel.pack(padx=20)
         self.strikesLabel.config(text= "Strikes left: {}".format(6- strikes))
 
         self.statusLabel = tk.Label(self.root,font= ('Arial, 18'))
@@ -128,32 +132,32 @@ class GUI:
             self.hangManBox.insert("5.0","| \n")
         
         elif strikes == 1:
-            self.hangManBox.insert("3.0","|  O \n")
+            self.hangManBox.insert("3.0","| O \n")
             self.hangManBox.insert("4.0","| \n")
             self.hangManBox.insert("5.0","| \n")
         
         elif strikes == 2:
-            self.hangManBox.insert("3.0","|  O \n")
+            self.hangManBox.insert("3.0","| O \n")
             self.hangManBox.insert("4.0","| / \n")
             self.hangManBox.insert("5.0","| \n")
         
         elif strikes == 3:
-            self.hangManBox.insert("3.0","|  O \n")
+            self.hangManBox.insert("3.0","| O \n")
             self.hangManBox.insert("4.0","| /| \n")
             self.hangManBox.insert("5.0","| \n")
         
         elif strikes == 4:
-            self.hangManBox.insert("3.0","|  O \n")
+            self.hangManBox.insert("3.0","| O \n")
             self.hangManBox.insert("4.0","| /|\ \n")
             self.hangManBox.insert("5.0","| \n")
         
         elif strikes == 5:
-            self.hangManBox.insert("3.0","|  O \n")
+            self.hangManBox.insert("3.0","| O \n")
             self.hangManBox.insert("4.0","| /|\ \n")
             self.hangManBox.insert("5.0","| / \n")
         
         elif strikes == 6:
-            self.hangManBox.insert("3.0","|  O \n")
+            self.hangManBox.insert("3.0","| O \n")
             self.hangManBox.insert("4.0","| /|\ \n")
             self.hangManBox.insert("5.0","| / \ \n")
 
@@ -178,7 +182,6 @@ class GUI:
         self.__init__()
         initializeGame()
         self.root.mainloop()
-        print("Restarted")
     
     def setDifficulty(self, mode): #Not working currently
         global word
@@ -222,7 +225,7 @@ class GUI:
         
         while len(word) <8:
             word = r.get_random_word()
-        
+
         self.restartGame()
 
 GUI()
