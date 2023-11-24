@@ -1,7 +1,7 @@
 # HangmanPY
 A python application using tkinter to play hangman
 
-<img width="450" alt="Screenshot 2023-11-02 133734" src="https://github.com/JorgeAgue/Hangman-PY/assets/98124296/cd7ee548-cd4f-49bc-aecb-04ea18ebdc2d">
+<img width="374" alt="Screenshot 2023-11-24 145706" src="https://github.com/JorgeAgue/Hangman-PY/assets/98124296/07c6e116-4ff0-4c2d-ae01-767785a34e3d">
 
 # Features
 Hangman: Allows the user to play a game of hangman
